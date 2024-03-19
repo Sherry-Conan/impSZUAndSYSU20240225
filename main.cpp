@@ -1,10 +1,11 @@
 #include"imp.h"
 
-Int_t main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
 	Int_t	FileNum = std::stoi(argv[1]); 
+	char* FileName = (char*)argv[2]; 
 
-	imp *impsysu = new imp(FileNum); 
+	imp *impsysu = new imp(FileNum, FileName); 
 
 	std::ifstream LaFile(Form("LaFile.txt")); 
 	std::ifstream GeFile(Form("GeFile.txt")); 
@@ -12,7 +13,7 @@ Int_t main(int argc, char const *argv[])
 
 	impsysu -> ReadOut(LaFile, GeFile, TimeFile); 
 
-	TFile *File = new TFile(Form("ana%04d.root", FileNum), "recreate"); 
+	TFile *File = new TFile(Form("../data/Ana_%s%04d.root", argv[2], FileNum), "recreate"); 
 	TTree *tree = new TTree("tree", "tree"); 
 
 	impsysu -> MakeTH(File, tree); 
